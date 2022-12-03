@@ -2,6 +2,7 @@ package com.example.test2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.hardware.SensorEvent;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -11,11 +12,16 @@ import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements MessageClient.OnMessageReceivedListener {
 
@@ -33,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements MessageClient.OnM
         Wearable.getMessageClient(this).addListener(this);
     }
 
-    private List<SensorData> sensorData;
+    private Map<String, List<SensorData>> sensorData;
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
@@ -42,13 +48,26 @@ public class MainActivity extends AppCompatActivity implements MessageClient.OnM
             try {
                 ByteArrayInputStream bis = new ByteArrayInputStream(data);
                 ObjectInputStream ois = new ObjectInputStream(bis);
-                sensorData = (List<SensorData>) ois.readObject();
+                sensorData = (Map<String, List<SensorData>>) ois.readObject();
+
+                File file = new File(this.getFilesDir(), LocalDateTime.now().toString());
+
+                FileOutputStream fos = new FileOutputStream(file);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+                oos.writeObject(sensorData);
+
+
+                textView.setText(file.getPath());
+
                 ois.close();
                 bis.close();
+                oos.close();
+                fos.close();
             } catch (Exception ioe) {
                 ioe.printStackTrace();
             }
-            textView.setText(sensorData.toString());
+
         }
     }
 

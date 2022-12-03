@@ -9,7 +9,8 @@ public class SensorData implements  Serializable {
 
     private final long timestamp;
     private final float[] values;
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
+    private final String sensorType;
 
     public long getTimestamp() {
         return timestamp;
@@ -19,8 +20,13 @@ public class SensorData implements  Serializable {
         return values;
     }
 
+    public String getSensorType() {
+        return sensorType;
+    }
+
     SensorData(SensorEvent sensorEvent) {
         this.timestamp = sensorEvent.timestamp;
         this.values = sensorEvent.values;
+        this.sensorType = sensorEvent.sensor.getStringType();
     }
 }
