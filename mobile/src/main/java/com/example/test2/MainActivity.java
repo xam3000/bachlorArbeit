@@ -10,10 +10,14 @@ import android.widget.TextView;
 import com.google.android.gms.wearable.MessageClient;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
+import com.opencsv.CSVWriter;
+
+import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -52,23 +56,44 @@ public class MainActivity extends AppCompatActivity implements MessageClient.OnM
 
                 File file = new File(this.getFilesDir(), LocalDateTime.now().toString());
 
-                FileOutputStream fos = new FileOutputStream(file);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                file.mkdir();
 
-                oos.writeObject(sensorData);
+                sensorData.forEach((s, sensorData1) -> {
+                    try {
+                        String[] header ={"timestamp", "x", "y", "z"};
 
+                        CSVWriter writer = new CSVWriter(new FileWriter(new File(file, s + ".csv")));
+                        writer.writeNext(header);
+                        for (SensorData sensorData2 : sensorData1) {
+                            writer.writeNext(sensorData2.toStringArray());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                ZipUtil.pack(file, new File(file.getPath() + ".zip"));
+
+                deleteDirectory(file);
 
                 textView.setText(file.getPath());
 
                 ois.close();
                 bis.close();
-                oos.close();
-                fos.close();
             } catch (Exception ioe) {
                 ioe.printStackTrace();
             }
 
         }
+    }
+
+    boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
     }
 
 

@@ -1,44 +1,40 @@
 package com.example.test2;
 
-import android.hardware.SensorEvent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class SensorData implements  Serializable{
+public class SensorData implements  Serializable {
 
 
-    private final long timestamp;
-    private final float[] values;
+    private  long timestamp;
+    private  float[] values;
     private static final long serialVersionUID = 2L;
-    private final String sensorType;
+    private  String sensorType;
 
     public long getTimestamp() {
         return timestamp;
     }
 
     public float[] getValues() {
-            return values;
-        }
+        return values;
+    }
 
     public String getSensorType() {
         return sensorType;
     }
 
-    SensorData(SensorEvent sensorEvent) {
-            this.timestamp = sensorEvent.timestamp;
-            this.values = sensorEvent.values;
-            this.sensorType = sensorEvent.sensor.getStringType();
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
-    @Override
-    public String toString() {
-        return "SensorData{" +
-                "timestamp=" + timestamp +
-                ", values=" + Arrays.toString(values) +
-                '}';
+    public void setValues(float[] values) {
+        this.values = values;
+    }
+
+    public void setSensorType(String sensorType) {
+        this.sensorType = sensorType;
     }
 
     public String[] toStringArray() {

@@ -26,7 +26,7 @@ public class SensorData implements  Serializable {
 
     SensorData(SensorEvent sensorEvent) {
         this.timestamp = sensorEvent.timestamp;
-        this.values = sensorEvent.values;
+        this.values = sensorEvent.values.clone();
         this.sensorType = sensorEvent.sensor.getStringType();
     }
 }
