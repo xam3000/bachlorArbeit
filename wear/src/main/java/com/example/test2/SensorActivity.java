@@ -86,24 +86,24 @@ public class SensorActivity extends Activity implements SensorEventListener {
             sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
             sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
-            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER_UNCALIBRATED), SensorManager.SENSOR_DELAY_FASTEST);
+            //sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER_UNCALIBRATED), SensorManager.SENSOR_DELAY_FASTEST);
             sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY), SensorManager.SENSOR_DELAY_FASTEST);
             sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_FASTEST);
-            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE_UNCALIBRATED), SensorManager.SENSOR_DELAY_FASTEST);
+            //sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE_UNCALIBRATED), SensorManager.SENSOR_DELAY_FASTEST);
             sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_FASTEST);
             sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR), SensorManager.SENSOR_DELAY_FASTEST);
-            //sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION), SensorManager.SENSOR_DELAY_FASTEST);
+            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION), SensorManager.SENSOR_DELAY_FASTEST);
             //sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER), SensorManager.SENSOR_DELAY_FASTEST);
             //sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR), SensorManager.SENSOR_DELAY_FASTEST);
 
             sensorEvents.put(Sensor.STRING_TYPE_ACCELEROMETER, new ArrayList<>());
-            sensorEvents.put(Sensor.STRING_TYPE_ACCELEROMETER_UNCALIBRATED, new ArrayList<>());
+            //sensorEvents.put(Sensor.STRING_TYPE_ACCELEROMETER_UNCALIBRATED, new ArrayList<>());
             sensorEvents.put(Sensor.STRING_TYPE_GRAVITY, new ArrayList<>());
             sensorEvents.put(Sensor.STRING_TYPE_GYROSCOPE, new ArrayList<>());
-            sensorEvents.put(Sensor.STRING_TYPE_GYROSCOPE_UNCALIBRATED, new ArrayList<>());
+            //sensorEvents.put(Sensor.STRING_TYPE_GYROSCOPE_UNCALIBRATED, new ArrayList<>());
             sensorEvents.put(Sensor.STRING_TYPE_LINEAR_ACCELERATION, new ArrayList<>());
             sensorEvents.put(Sensor.STRING_TYPE_ROTATION_VECTOR, new ArrayList<>());
-            //sensorEvents.put(Sensor.STRING_TYPE_SIGNIFICANT_MOTION, new ArrayList<>());
+            sensorEvents.put(Sensor.STRING_TYPE_SIGNIFICANT_MOTION, new ArrayList<>());
             //sensorEvents.put(Sensor.STRING_TYPE_STEP_COUNTER, new ArrayList<>());
             //sensorEvents.put(Sensor.STRING_TYPE_STEP_DETECTOR, new ArrayList<>());
 

@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements MessageClient.OnM
 
     private final String VOICE_TRANSCRIPTION_MESSAGE_PATH = "/gyro_data";
 
+    static long firstTiemstamp = Long.MAX_VALUE;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,16 @@ public class MainActivity extends AppCompatActivity implements MessageClient.OnM
 
                 file.mkdir();
 
+
+
+                sensorData.forEach((s, sensorData1) -> {
+                    for (SensorData sensorData2 : sensorData1) {
+                        if (sensorData2.getTimestamp() < firstTiemstamp){
+                            firstTiemstamp = sensorData2.getTimestamp();
+                        }
+                    }
+                });
+
                 sensorData.forEach((s, sensorData1) -> {
                     try {
                         String[] header ={"timestamp", "x", "y", "z"};
@@ -65,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements MessageClient.OnM
                         CSVWriter writer = new CSVWriter(new FileWriter(new File(file, s + ".csv")));
                         writer.writeNext(header);
                         for (SensorData sensorData2 : sensorData1) {
-                            writer.writeNext(sensorData2.toStringArray());
+                            writer.writeNext(sensorData2.toStringArray(firstTiemstamp));
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

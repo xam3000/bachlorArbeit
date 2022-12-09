@@ -10,7 +10,7 @@ import java.util.List;
 public class SensorData implements  Serializable{
 
 
-    private final long timestamp;
+    private long timestamp;
     private final float[] values;
     private static final long serialVersionUID = 2L;
     private final String sensorType;
@@ -41,8 +41,9 @@ public class SensorData implements  Serializable{
                 '}';
     }
 
-    public String[] toStringArray() {
+    public String[] toStringArray(long firsttimestamp) {
         List<String> strings = new ArrayList<>();
+        timestamp -= firsttimestamp;
         strings.add(String.valueOf(timestamp));
         for (float f : values) {
             strings.add(String.valueOf(f));
