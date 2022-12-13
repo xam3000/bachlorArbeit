@@ -79,11 +79,24 @@ public class SensorActivity extends Activity implements SensorEventListener {
     private void collectSensorData() {
 
         if (collecting) {
-            sensorButton.setText("Start collecting");
             sensorManager.unregisterListener(this);
+            sensorButton.setText("Start collecting");
+
         } else {
             sensorEvents = new HashMap<>();
             sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+
+            sensorEvents.put(Sensor.STRING_TYPE_ACCELEROMETER, new ArrayList<>());
+            //sensorEvents.put(Sensor.STRING_TYPE_ACCELEROMETER_UNCALIBRATED, new ArrayList<>());
+            sensorEvents.put(Sensor.STRING_TYPE_GRAVITY, new ArrayList<>());
+            sensorEvents.put(Sensor.STRING_TYPE_GYROSCOPE, new ArrayList<>());
+            //sensorEvents.put(Sensor.STRING_TYPE_GYROSCOPE_UNCALIBRATED, new ArrayList<>());
+            sensorEvents.put(Sensor.STRING_TYPE_LINEAR_ACCELERATION, new ArrayList<>());
+            sensorEvents.put(Sensor.STRING_TYPE_ROTATION_VECTOR, new ArrayList<>());
+            sensorEvents.put(Sensor.STRING_TYPE_SIGNIFICANT_MOTION, new ArrayList<>());
+            //sensorEvents.put(Sensor.STRING_TYPE_STEP_COUNTER, new ArrayList<>());
+            //sensorEvents.put(Sensor.STRING_TYPE_STEP_DETECTOR, new ArrayList<>());
 
             sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
             //sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER_UNCALIBRATED), SensorManager.SENSOR_DELAY_FASTEST);
@@ -96,16 +109,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
             //sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER), SensorManager.SENSOR_DELAY_FASTEST);
             //sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR), SensorManager.SENSOR_DELAY_FASTEST);
 
-            sensorEvents.put(Sensor.STRING_TYPE_ACCELEROMETER, new ArrayList<>());
-            //sensorEvents.put(Sensor.STRING_TYPE_ACCELEROMETER_UNCALIBRATED, new ArrayList<>());
-            sensorEvents.put(Sensor.STRING_TYPE_GRAVITY, new ArrayList<>());
-            sensorEvents.put(Sensor.STRING_TYPE_GYROSCOPE, new ArrayList<>());
-            //sensorEvents.put(Sensor.STRING_TYPE_GYROSCOPE_UNCALIBRATED, new ArrayList<>());
-            sensorEvents.put(Sensor.STRING_TYPE_LINEAR_ACCELERATION, new ArrayList<>());
-            sensorEvents.put(Sensor.STRING_TYPE_ROTATION_VECTOR, new ArrayList<>());
-            sensorEvents.put(Sensor.STRING_TYPE_SIGNIFICANT_MOTION, new ArrayList<>());
-            //sensorEvents.put(Sensor.STRING_TYPE_STEP_COUNTER, new ArrayList<>());
-            //sensorEvents.put(Sensor.STRING_TYPE_STEP_DETECTOR, new ArrayList<>());
+
 
             sensorButton.setText("Stop collecting");
         }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.hardware.SensorEvent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.widget.TextView;
 
 import com.google.android.gms.wearable.MessageClient;
@@ -26,6 +27,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MainActivity extends AppCompatActivity implements MessageClient.OnMessageReceivedListener {
 
@@ -58,34 +61,54 @@ public class MainActivity extends AppCompatActivity implements MessageClient.OnM
 
                 File file = new File(this.getFilesDir(), LocalDateTime.now().toString());
 
+
                 file.mkdir();
 
 
 
-                sensorData.forEach((s, sensorData1) -> {
+               /* sensorData.forEach((s, sensorData1) -> {
                     for (SensorData sensorData2 : sensorData1) {
                         if (sensorData2.getTimestamp() < firstTiemstamp){
                             firstTiemstamp = sensorData2.getTimestamp();
                         }
                     }
-                });
+                }); */
+
+                File rawData  = new File(file, "raw");
+
+                FileOutputStream fos = new FileOutputStream(rawData);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+                oos.writeObject(sensorData);
+
+                ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+
+                Lock readLock = lock.readLock();
+                Lock writeLock = lock.writeLock();
+
 
                 sensorData.forEach((s, sensorData1) -> {
                     try {
+                        readLock.lock();
                         String[] header ={"timestamp", "x", "y", "z"};
 
                         CSVWriter writer = new CSVWriter(new FileWriter(new File(file, s + ".csv")));
                         writer.writeNext(header);
                         for (SensorData sensorData2 : sensorData1) {
-                            writer.writeNext(sensorData2.toStringArray(firstTiemstamp));
+                            writer.writeNext(sensorData2.toStringArray(0));
                         }
+                        writer.close();
                     } catch (IOException e) {
                         e.printStackTrace();
+                    } finally {
+
+                        readLock.unlock();
                     }
                 });
+                writeLock.lock();
                 ZipUtil.pack(file, new File(file.getPath() + ".zip"));
-
-                deleteDirectory(file);
+                writeLock.unlock();
+                //deleteDirectory(file);
 
                 textView.setText(file.getPath());
 
